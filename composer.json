@@ -1,0 +1,21 @@
+{
+    "name": "szotyi/idevthis",
+    "description": "Ezt fejlesztem blogmotor",
+    "type": "project",
+    "require": {
+        "php": "7.*.*",
+        "doctrine/orm": "2.4.*",
+        "gedmo/doctrine-extensions": "2.*.*"
+    },
+    "autoload" : {
+        "psr-4": {
+            "": ""
+        }
+    },
+    "authors": [
+        {
+            "name": "Buza Péter",
+            "email": "szotyi41@yahoo.com"
+        }
+    ]
+}
