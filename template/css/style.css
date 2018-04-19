@@ -7,7 +7,7 @@ html, body {
 
 .container {
 	margin: auto;
-	max-width: 900px;
+	max-width: 800px;
 	width: 90%;
 }
 
@@ -60,7 +60,6 @@ p.tag {
 	background: #007BFF;
 	color: #FFF;
 	padding: 5px;
-	margin-right: 5px;
 }
 
 p.tag:hover {

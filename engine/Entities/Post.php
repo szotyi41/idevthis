@@ -1,14 +1,17 @@
 <?php
 
+namespace Engine\Entities;
+
 use Doctrine\ORM\Mapping as ORM;
+use DoctrineExtensions\Query\Mysql\Date;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  *  @Entity
- *  @Table(name="Posts")
+ *  @Table(name="post")
  */
-class Posts
+class Post
 {
     /**
      * @Id
@@ -38,6 +41,11 @@ class Posts
 
     /** @Column(type="text", nullable=true) */
     private $tags;
+
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+    }
 
     /**
      * @return mixed
@@ -96,11 +104,18 @@ class Posts
     }
 
     /**
-     * @return \DateTime
+     * @return string
      */
-    public function getCreated(): \DateTime
+    public function getCreated()
     {
-        return $this->created;
+        $date = $this->created;
+        $months = Array("Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
+        $result = $date->format("Y.") . WS;
+        $result .= $months[(integer) $date->format("m") - 1] . WS;
+        $result .= $date->format("d.") . WS;
+        $result .= $date->format("H:i");
+        
+        return $result;
     }
 
     /**
@@ -124,7 +139,7 @@ class Posts
      */
     public function getTags()
     {
-        return $this->tags;
+        return explode(",", $this->tags);
     }
 
     /**

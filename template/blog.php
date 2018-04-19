@@ -140,27 +140,6 @@ class Movie {
 </div>
 
 <div class="container">
-	<h1>Fejlesztői szoftverek</h1>
-	<p>Összegyűjöttem néhány szoftvert amit eddig használtam a munkáim során.</p>
-
-	<h2>Operációs rendszer</h2>
-	<p>Operációs rendszerek tekintetében a Linuxokat jobban preferálom, viszont az Adobe termékek és még néhány alkalmazás rákényszerít, hogy Windowst használjak az asztali számítógépemen. Több linux disztribúciót is kipróbáltam már, viszont a laptopomon maradtam az Ubuntunál. Legerősebb érvem, hogy óriási community áll mögötte, minden számomra fontos alkalmazás megtalálható rá és a legtöbb eszközzel kompatibilis.</p>
-	<img src="images/ubuntu.png">
-
-	<h2>Sublime Text 3</h2>
-	<p>Leginkább HTML, XML, CSS és JavaScript kódolásra használom ezt a szövegszerkesztőt. Rengeteg Plugin található hozzá amit a Ctrl + Shift + P kombináció után érhetek el. Minden nyelvhez találni valamilyen kiegészítőt és remekül személyreszabható. Van lehetőségünk Projekt szinten dolgozni benne, viszont arra inkább ott vannak komolyabb <span class="alt" title="Integrált fejlesztői környezet">IDE</span>-k ahol közvetlenül tudunk adatbázishoz kapcsolódni és Projekt szinten dobálja hozzánk más fájlokban lévő osztályok metódusait.</p>
-	<img src="images/subl.png">
-
-	<h2>Jetbrains PHP Storm</h2>
-	<p>A PHP Storm egy IDE PHP fejlesztők számára.</p>
-	<img src="images/phpstorm.png">
-
-	<h2>XAMPP</h2>
-	<p>Ha csak fejlesztünk a gépünkön és nem használjuk élő szerverként, remek alternatíva lehet a XAMPP ami apache2 webszervert, php7et, mysqlt, phpmyadmint és további finomságokat nyújt számunkra.</p>
-	<img src="images/xampp.png">
-</div>
-
-<div class="container">
 	<h1>Composer</h1>
 	<p>A composer zeneszerkesztő szoftverrel remek hangokat adhatunk hozzá projektjeinket. Olyan nagy nevek fűzhetőek hozzá mint Beethowen, Bach, Haydn... A viccet félretéve a composer egy <span class="alt" title="függőség">dependencia</span> kezelő alkalmazás amit a PHP fejlesztők előszeretettel használnak. Működése nem bonyolult, leginkább az ubununtu rendszereken használt apt-get szoftverre hasonlít. Feladata, hogy mielőtt valaki felrakná a te programodat a webszerverére leellenőrizze, hogy minden szükséges feltételnek megfelel az ő gépén lévő szoftverek, mint például PHP verzió, adatbáziskezelő verziója, egyéb szükséges kódok mint például egy harmadik féltől származó wysiwyg editor, vagy egy egyszerű font-awesome package meghatározott verziója. Valamint még egy autoloader feladatát is elvégzi ami autómatikusan meghívja az összes függőséget futás előtt, vagy az összes php állományt amit mi írtunk, például egy adott névtérre szűkítve.</p>
 

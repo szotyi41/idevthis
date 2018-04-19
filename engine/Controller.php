@@ -9,32 +9,60 @@
 namespace Engine;
 
 use Doctrine\ORM\EntityManager;
+use Engine\Entities\Post;
 
 class Controller
 {
+    /** @var EntityManager */
+    private $entityManager;
 
-    public static function create(EntityManager $entityManager)
+    /**
+     * @param integer $id
+     */
+    public function selectPost($id)
     {
-        $repository = $entityManager->getRepository('\Posts');
-        $posts = $repository->findAll();
+        $repository = $this->entityManager->getRepository('Engine\Entities\Post');
+        $post = $repository->find($id);
 
-        foreach ($posts as $post) {
-
-        }
-/*
         Variable::set('post', $post->getContentfile());
         Variable::set('title', $post->getTitle());
         Variable::set('created', $post->getCreated());
-        Variable::set('tags', self::getTags($post->getTags()));
+        Variable::set('tags', $post->getTags());
 
-
-        include TEMPLATE . "header.php";
-        //include TEMPLATE . Variable::get('post') . ".php";
-        include TEMPLATE . "footer.php";*/
+        include TEMPLATE . "post.php";
     }
 
-    public static function getTags($string) {
-        return explode(",", $string);
+    /**
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function insertPost() {
+
+        $post = new Post();
+        $post->setTitle("Apple");
+        $post->setContentfile("oop");
+        $post->setHeaderfile("alma");
+        $post->setDescription("sds");
+        $post->setTags("ssdsa");
+
+        $this->entityManager->persist($post);
+        $this->entityManager->flush();
+
+        return "Created post with ID: " . $post->getId() . "\n";
     }
 
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 }

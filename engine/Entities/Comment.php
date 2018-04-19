@@ -1,14 +1,16 @@
 <?php
 
+namespace Engine\Entities;
+
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  *  @Entity
- *  @Table(name="Comments")
+ *  @Table(name="comment")
  */
-class Comments
+class Comment
 {
     /**
      * @Id

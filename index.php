@@ -4,4 +4,6 @@ use Engine\Controller;
 
 require "bootstrap.php";
 
-Controller::create($entityManager);
+$cont = new Controller();
+$cont->setEntityManager($entityManager);
+$cont->selectPost(2);
