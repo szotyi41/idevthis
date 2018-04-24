@@ -1,10 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<p>A composer zeneszerkesztő szoftverrel remek hangokat adhatunk hozzá projektjeinket. Olyan nagy nevek fűzhetőek hozzá mint Beethowen, Bach, Haydn... A viccet félretéve a composer egy <span class="alt" title="függőség">dependencia</span> kezelő alkalmazás amit a PHP fejlesztők előszeretettel használnak. Működése nem bonyolult, leginkább az ubununtu rendszereken használt apt-get szoftverre hasonlít. Feladata, hogy mielőtt valaki felrakná a te programodat a webszerverére leellenőrizze, hogy minden szükséges feltételnek megfelel az ő gépén lévő szoftverek, mint például PHP verzió, adatbáziskezelő verziója, egyéb szükséges kódok mint például egy harmadik féltől származó wysiwyg editor, vagy egy egyszerű font-awesome package meghatározott verziója. Valamint még egy autoloader feladatát is elvégzi ami autómatikusan meghívja az összes függőséget futás előtt, vagy az összes php állományt amit mi írtunk, például egy adott névtérre szűkítve.</p>
+
+<p>Első dolgunk globálisan telepíteni a composert <a href="https://getcomposer.org/download/" target="_blank">erről</a> az oldalról. Windowson ezt a Composer-Setup.exe futtatásával ki is pipáltuk, viszont Linuxon és OSX rendszer esetében a terminálba beírt az adott oldalon található telepítési útmutató végrehajtása által érhetjük el. </p>
+
+<h2>composer init</h2>
+<p>A telepítést követően <span class="alt" title="Parancssoros felület">CLI</span> által jussunk el a projektünk könyvtáráig, majd adjuk ki a <code class="short">composer init</code> parancsot. Ez rögtön rá fog kérdezni mi a projekt neve, leírása, fejlesztője. Az enterre ütve ha nem írtunk be semmit a felkínált szöveg lép érvénybe. Majd megkérdezi, hogy mi a Minimum Stability ide az alábbiak közül érdemes beírni:</p>
+
+<ul>
+    <li>Stable (Stabil verzió)</li>
+    <li>RC (Kiadásra jelölt)</li>
+    <li>Beta</li>
+    <li>Alpha</li>
+    <li>Dev (Fejlesztés alatt)</li>
+</ul>
+
+<p>Következő paraméter a Package Type, ahova az ott megjelenő példák közül beírhatunk egyet. License megadása pl. open-source. Majd jön a csoda. Definiálnunk kell a szükséges dependenciákat. Beírjuk, hogy PHP majd rákérdez a verziószámra.</p>
+
+<h2>verziók</h2>
+<p>Verziók megadásánál használhatunk relációs jeleket, így megadhatjuk például <code class="short">>=5.0.0</code>. Vagy megtehetjük a következőt <code class="short">7.*.*</code>. Erről több információt a <a href="https://getcomposer.org/doc/articles/versions.md" target="_blank">composer</a> oldalán találsz.</p>
+
+<h2>composer.json</h2>
+<p>Miután sikerült végighaladnunk a composer nyújtotta paraméterek megadásán, a könyvtárunkba kaptunk egy <code class="short">composer.json</code> és egy <code class="short">composer.lock</code> állományt. A json fájl gondolom nem idegen számunkra úgyhogy nem lepődünk meg a struktúráján. Az auto-loader a psr-4 szekciónál található, itt adhatjuk meg honnan importálja be a kódjainkat.</p>
+
+<pre><code class="json">
+{
+  "name": "vendor/application",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit.",
+  "type": "project",
+  "require": {
+      "php": "7.*.*",
+      "components/jquery": "^3.3",
+      "components/font-awesome": "^5.0"
+  },
+  "autoload": {
+      "psr-4": {
+          "":""
+      }
+  },
+  "license": "open-source",
+  "authors": [
+      {
+          "name": "John Doe",
+          "email": "johndoe@gmail.com"
+      }
+  ]
+}
+</code></pre>
+
+<h2>composer update</h2>
+<p>Amennyiben mi valaki más projektjét töltöttük le és composert használ mindenképpen a <code class="short">composer update</code>, vagy <code class="short">composer install</code> futtatásával tölthetjük le a szükséges dependenciákat.</p>

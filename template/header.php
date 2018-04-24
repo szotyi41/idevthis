@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="template/css/style.css">
+    <link rel="stylesheet" type="text/css" href="template/css/form.css">
 
 	<script src="template/js/jquery.min.js"></script>
 	<script src="template/js/jquery-ui.min.js"></script>

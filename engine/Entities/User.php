@@ -19,7 +19,7 @@ class User
      */
     private $id;
 
-    /** @Column(name="title", type="string", nullable=false) */
+    /** @Column(name="name", type="string", nullable=false) */
     private $name;
 
     /** @Column(name="avatar", type="integer", nullable=true) */
@@ -27,5 +27,61 @@ class User
 
     /** @Column(name="prefix", type="string", nullable=true) */
     private $prefix;
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param integer $avatar
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
 
 }

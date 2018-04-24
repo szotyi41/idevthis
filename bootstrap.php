@@ -6,6 +6,7 @@ define("WS", " ");
 define("TEMPLATE", "template" . DIR);
 define("DB_FILE", ROOT . "database.sqlite");
 define("DB_CONNECTION", array('driver' => 'pdo_sqlite', 'path' => DB_FILE));
+define("POST_PER_PAGE", 5);
 
 require "vendor" . DIR . "autoload.php";
 

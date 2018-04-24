@@ -4,6 +4,8 @@ namespace Engine\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use DoctrineExtensions\Query\Mysql\Date;
+use Engine\DateCount;
+use Engine\Variable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -42,6 +44,9 @@ class Post
     /** @Column(type="text", nullable=true) */
     private $tags;
 
+    /**
+     * Timestamp the created variable.
+     */
     public function __construct()
     {
         $this->created = new \DateTime();
@@ -108,14 +113,7 @@ class Post
      */
     public function getCreated()
     {
-        $date = $this->created;
-        $months = Array("Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December");
-        $result = $date->format("Y.") . WS;
-        $result .= $months[(integer) $date->format("m") - 1] . WS;
-        $result .= $date->format("d.") . WS;
-        $result .= $date->format("H:i");
-        
-        return $result;
+        return DateCount::getNormal($this->created);
     }
 
     /**
@@ -149,7 +147,5 @@ class Post
     {
         $this->tags = $tags;
     }
-
-
 
 }

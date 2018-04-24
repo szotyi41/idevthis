@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<p>Rengeteg leírást találtam gitről viszont laikusok számára kissé érthetetlen lehet, hogyan is működik egy verziókezelő. A verziókezelők leginkább egy ftp szerverhez hasonlítanak annyi különbséggel, hogy nem csak a jelenlegi kódot tárolják, hanem minden commit után létrehoz egy verziót a megírt kódból, hogy visszaállítható legyen, vagy nyomon követhető ki mikor mit tett hozzá a produktum növekedéséhez. A git egy verziókezelő szoftver, a github pedig egy közösségi oldal ahol tárolhatjuk munkáinkat. Amennyiben a kódunk publikus, ingyen feltölthetjük és tárolhatjuk korlátlanul.</p>
+
+<p>Első dolgunk lesz telepíteni a git alkalmazást a fejlesztő számítógépére. Ezt az <a href="https://git-scm.com/" target="_blank">alábbi</a> oldalról letöltjük.
+    Telepítés után Linux, vagy OSX esetében a terminálban, vagy Windows esetén a cmdben jussunk el a verziókezelésre szánt kódunk könyvtárába majd adjuk ki a <code class="short">git init</code> parancsot. Ekkor létrehozott a program egy rejtett .git nevű mappát a könyvtárba. Itt fogja kezelni a git a számára szükséges adatokat, nem szükséges benne mozogni.</p>
+
+<p>Mikor a git frissen települt be kell konfigurálnunk kik vagyunk, hogy később nyomon követhetőek legyünk. Ezt a <code class="short">git config --global user.name ”név”</code> és a <code class="short">git config --global user.email ”email cím”</code> parancsokkal tehetjük meg.</p>
+
+<p>Amennyiben egy meglévő <span class="alt" title="Tároló">repositoryból</span> szeretnénk letölteni a <code class="short">git clone https://github.com/felhasználó/tároló</code> paranccsal letölthetjük azt a könyvtárunkba és kedvünkre módosíthatjuk.</p>
+
+<h2>.gitignore</h2>
+
+<p>Miután lefuttattuk a fent leírt parancsok egyikét elkezdhetünk dolgozni a könyvtárban. Amennyiben nem szeretnénk, hogy egy bizonyos állomány, vagy egy teljes könyvtár tartalma felkerüljön a tárolóba <span class="alt" title="Feltöltés a tárolóba">pusholáskor</span>, hozzunk létre egy <code class="short">.gitignore</code> szöveges állományt és írjuk bele annak elérhetőségét.</p>
+<p>Ha a Windows nem enged ilyen fájlt létrehozni cmdben adjuk ki a <code class="short">notepad .gitignore</code> parancsot.</p>
+<p>Érdemes ignorálni azt a fájlt ami az adatbázis elérhetőséget tartalmazza (felhasználónév, jelszó), valamint a vendor mappát amennyiben létezik.</p>
+
+<h2>commit</h2>
+<p>Miután hozzányúltunk a kódhoz és úgy érezzük megérett arra, hogy aláírjuk a nevünket, első feladatunk hogy hozzáadjuk a feltölteni kívánt állományokat, könyvtárakat a ”színpadunkhoz” amik később majd a tárolóba kerülnek. Ezt a <code class="short">git add állománynév/könyvtár</code> paranccsal érhetjük el. Amennyiben az összes könyvtárat és állományt hozzá szeretnénk adni a <code class="short">git add .</code> paranccsal megtehetjük ezt. Ekkor a .gitignore állományainkban talált útvonalakon kívül mindent hozzáad az adott könyvtárban.</p>
+
+<p>Majd ellenőrizzük le mihez is nyúltunk hozzá. Adjuk ki a <code class="short">git status</code> parancsot ami felsorolja, hogy milyen állományok változtak meg az előző verzióhoz képest. Majd ha mindent rendben találunk, (tényleg azokat a fájlokat sorolja fel amiket módosítottunk) akkor a <code class="short">git commit -m ”leírás”</code> parancsot kiadva létrehoztunk egy új commitot. Minden commit előtt érdemes egy git status paranccsal leellenőrizni mi változott, nehogy kavarodás legyen. A <code class="short">git diff</code> paranccsal megtekinthetjük milyen különbségek  vannak a legutóbbi verzió és a mostani állományokra amit még nem addoltunk.</p>
+
+<p>A <code class="short">git log</code> paranccsal megnézhetjük a commitok történelmét, ki mikor mit változtatott. Új állományok létrehozásakor ne felejtsük el hozzáadni azt a <code class="short">git add fájlnév</code> paranccsal.</p>
+
+<h2>Feltöltés távoli tárolóba</h2>
+<p>Az eddigi parancsokat nyugodtan használhatjuk offline így bármikor folytathatjuk a munkánkat. Következő dolgunk megosztani az elkészült munkánkat a világhálón. Ehhez szükségünk lesz egy <span class="alt" title="Tároló">repositoryra</span> amit a <a href="https://github.com/" target="_blank">github.com</a> weboldalon, regisztrálás után létre is hozhatunk a felületen. Miután létrehoztuk ezt a tárolót ami kap egy elérési utat az alábbi paranccsal egy <span class="alt" title="Távoli elérés">remoteot</span> adhatunk meg <code class="short">git remote add origin https://github.com/felhasználó/tároló</code>. Lefordítva ez azt jelenti, hogy adjon hozzá egy központi távoli elérést ahova feltöltheti a munkánkat a későbbiekben. Ez még nem tölti fel a kódot, csak meghatározza, hogy hova töltse fel azt a későbbiekben.</p>
+
+<p>Amennyiben fel szeretnénk tölteni a tárolóba a munkánkat a <code class="short">git push origin master</code> paranccsal megtehetjük ezt. Ekkor megtörténik a csoda és megjelenik a tárolónkban az összes állomány, a commitok leírásaival, dátumokkal.</p>
+
+<p>Mi történik, ha más folytatja a munkát? Hogyan kerül az ő verziója hozzánk? Más egy újabb verziót töltött fel a tárolóba mi pedig már dolgozunk az alkalmazás másik részén akkor a git szól nekünk, hogy újabb verzió elérhető és szükséged lesz rá, mielőtt folytatod a munkát. Ekkor ki kell adnod a <code class="short">git pull</code> parancsot ami letölti a legfrissebb verziót. Érdemes megbeszélni ki mikor melyik részén dolgozik a kódnak, nehogy conflict alakuljon ki.</p>
+
+<h2>branch</h2>
+<p>Amennyiben egy új ágat szeretnénk hozzáadni, hogy ne a master ágon történjenek a változások és ne az kerüljön alapértelmezetten letöltésre mások által, érdemes új ágat létrehozni a <code class="short">git branch ágnév</code> paranccsal. Ezután ne felejtsünk el átlépni a létrehozott ágba, hogy oda kerüljenek a változások a <code class="short">git checkout ágnév</code> paranccsal. Ha az imént létrehozott ágban elkészültünk a kóddal a master ággal a <code class="short">git merge ágnév</code> összefésülhetjük ezt.</p>
+
+<h2>issue</h2>
+<p>A githubon minden tárolóhoz hozzáadhatunk <span class="alt" title="Probléma meghatározás">issuekat</span> amiről a fejlesztők értesítést kapnak, így ha valaki ráakad egy bugra itt értesítheti a fejlesztőt, hogy javítást, vagy kiegészítést igényel a projekt.</p>
+
+<h2>readme.md</h2>
+<p>Githubon van lehetőség megjeleníteni egy leírást a munkánkról amennyiben létrehozunk egy <code class="short">readme.md</code> nevű állományt. Ide mindenképpen érdemes leírni a Specifikációt, Rendszerkövetelményeket, Telepítési útmutatót, vagy a teljes dokumentációt. Ennek a rendszernek egy saját szintaxisa van aminek <a href="https://help.github.com/articles/basic-writing-and-formatting-syntax/" target="_blank">itt</a> olvashatjátok a dokumentációját.</p>
