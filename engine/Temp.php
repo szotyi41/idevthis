@@ -8,7 +8,7 @@
 
 namespace Engine;
 
-class Variable
+abstract class Temp
 {
     /**
      * You can get a POST variable value.

@@ -8,152 +8,86 @@
 
 namespace Engine;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Query;
-use Engine\Entities\Post;
+use Doctrine\ORM\OptimisticLockException;
 use Engine\Entities\Comment;
-use Engine\Entities\User;
 
 class Controller
 {
-    /** @var EntityManager */
+
     private $entityManager;
 
-    /**
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
-    }
+    /** @var $model Model */
+    private $model;
 
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function setEntityManager(EntityManager $entityManager)
+    function __construct($entityManager)
     {
         $this->entityManager = $entityManager;
+
+        $this->getModel();
+        $this->createAvatars();
+        $this->action();
     }
 
     /**
-     * @param integer $id
+     *  Run the application engine.
      */
-    public function selectPost($id)
+    public function action()
     {
-        $repository = $this->entityManager->getRepository('Engine\Entities\Post');
-        $post = $repository->find($id);
 
-        Variable::set('postId', $post->getId());
-        Variable::set('postTitle', $post->getTitle());
-        Variable::set('postContent', $post->getContentfile());
-        Variable::set('postCreated', $post->getCreated());
-        Variable::set('postTags', $post->getTags());
-
-        $this->selectComments($id);
-
-        include TEMPLATE . "post.php";
-    }
-
-
-    /**
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function insertPost() {
-        $post = new Post();
-        $post->setTitle("Composer és a Dependenciakezelés");
-        $post->setContentfile("composer.html");
-        $post->setDescription("");
-        $post->setTags("");
-
-        $this->entityManager->persist($post);
-        $this->entityManager->flush();
-
-        return "Created post with ID: " . $post->getId() . "\n";
-    }
-
-    public function selectPosts($search) {
-        $repository = $this->entityManager->getRepository('Engine\Entities\Post');
-        $query = $repository->createQueryBuilder('p')
-            ->where("p.title LIKE :search OR p.tags LIKE :search OR p.description LIKE :search")
-            ->setParameter('search', '%' . $search . '%')
-            ->setMaxResults(POST_PER_PAGE);
-
-        $posts = $query->getQuery()->getResult();
-
-        /** @var Post $post */
-        foreach ($posts as $post) {
-            Variable::addToArray('postId', $post->getId());
-            Variable::addToArray('postTitle', $post->getTitle());
-            Variable::addToArray('postCreated', $post->getCreated());
-            Variable::addToArray('postHeader', $post->getHeaderfile());
-            Variable::addToArray('postDescription', $post->getDescription());
-            Variable::addToArray('postTags', $post->getTags());
-        }
-
-        include TEMPLATE . "home.php";
-    }
-
-
-    public function selectComments($postid) {
-        $repository = $this->entityManager->getRepository('Engine\Entities\Comment');
-        $query = $repository->createQueryBuilder('c')
-            ->where("c.postid = :postid")
-            ->setParameter('postid', $postid);
-
-        $comments = $query->getQuery()->getResult();
-
-        /** @var Comment $comment */
-        foreach ($comments as $comment) {
-            Variable::addToArray('commentId', $comment->getId());
-            Variable::addToArray('commentUserid', $comment->getUserid());
-            Variable::addToArray('commentCreated', $comment->getCreated());
-            Variable::addToArray('commentContent', $comment->getContent());
+        /** Add a new comment if there is a content */
+        if (Temp::get('comment'))
+        {
+            $comment = new Comment();
+            $comment->setPostid($_GET['post']);
+            $comment->setUserid(1);
+            $comment->setContent(Temp::get('comment'));
 
             try {
-
-                /** @var User $user */
-                $user = self::selectUser($comment->getUserid());
-
-                Variable::addToArray('commentUserAvatar', $user->getAvatar());
-                Variable::addToArray('commentUserName', $user->getName());
-                Variable::addToArray('commentUserPrefix', $user->getPrefix());
-            } catch (NoResultException $e) {
-                Variable::addToArray('commentUserName', 'Removed user');
+                $this->model->insertComment($comment);
+            } catch (OptimisticLockException $e) {
+                echo "Can't add a new comment.";
             }
-
         }
+
+        /** Select a post by id */
+        if      (isset($_GET['post'])) $this->model->selectPost($_GET['post']);
+
+        /** Select post list by Search text */
+        elseif  (isset($_GET['search'])) $this->model->selectPosts($_GET['search']);
+        else    $this->model->selectPosts(null);
     }
 
     /**
-     * @throws \Doctrine\ORM\OptimisticLockException
+     *  Create constant Avatar icons from template/images/avatars.
      */
-    public function insertComment() {
-        $comment = new Comment();
-        $comment->setPostid(Variable::get('post'));
-        $comment->setUserid(1);
-        $comment->setContent($_POST['content']);
+    public function createAvatars()
+    {
+        $directory = TEMPLATE . "images" . DIR . "avatars" . DIR;
+        $files = scandir($directory);
 
-        $this->entityManager->persist($comment);
-        $this->entityManager->flush();
+        foreach($files as $file) {
+            if(is_file($directory . $file)) {
+                $avatarName[] = explode(".", $file)[0];
+                $avatarFile[] = $file;
+            }
+        }
 
-        echo "Created post with ID: " . $comment->getId() . "\n";
+        define("AVATAR_NAME", $avatarName);
+        define("AVATAR_FILE", $avatarFile);
     }
 
     /**
-     * @param $userid integer
-     * @return User
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * Get the called model, or call it.
+     * @return Model
      */
-    public function selectUser($userid) {
-        $repository = $this->entityManager->getRepository('Engine\Entities\User');
-        $query = $repository->createQueryBuilder('c')
-            ->where("c.id = :id")
-            ->setParameter('id', $userid);
+    public function getModel()
+    {
+        if($this->model == null) {
+            $this->model = new Model($this->entityManager);
+        }
 
-        return $query->getQuery()->getSingleResult();
+        return $this->model;
     }
+
 
 }

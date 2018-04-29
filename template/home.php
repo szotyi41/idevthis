@@ -1,4 +1,4 @@
-<?php use Engine\Variable; ?>
+<?php use Engine\Temp; ?>
 
 <?php include TEMPLATE . "header.php"; ?>
 
@@ -6,26 +6,26 @@
 
     <?php include TEMPLATE . "searchbar.php"; ?>
 
-    <?php if(is_array(Variable::get('postId'))): ?>
-    <?php for($i = 0; $i < count(Variable::get('postId')); $i++): ?>
+    <?php if(is_array(Temp::get('postId'))): ?>
+    <?php for($i = 0; $i < count(Temp::get('postId')); $i++): ?>
 
-        <h1><a href="?post=<?=Variable::getItem('postId', $i)?>"><?=Variable::getItem('postTitle', $i)?></a></h1>
-        <p>Létrehozva <?=Variable::getItem('postCreated', $i)?></p>
+        <h1><a href="?post=<?=Temp::getItem('postId', $i)?>"><?=Temp::getItem('postTitle', $i)?></a></h1>
+        <p>Létrehozva <?=Temp::getItem('postCreated', $i)?></p>
 
-        <?php foreach(Variable::getItem('postTags', $i) as $tag):?>
+        <?php foreach(Temp::getItem('postTags', $i) as $tag):?>
             <a class="tag" href="?search=<?=$tag?>"><?=$tag?></a>
         <?php endforeach;?>
 
-        <?php if(is_file("template/images/" . Variable::getItem('postHeader', $i))): ?>
-            <img class="postHeader" src="template/images/<?=Variable::getItem('postHeader', $i)?>">
+        <?php if(is_file("template/images/" . Temp::getItem('postHeader', $i))): ?>
+            <img class="postHeader" src="template/images/<?=Temp::getItem('postHeader', $i)?>">
         <?php endif; ?>
 
-        <p><?=Variable::getItem('postDescription', $i)?></p>
+        <p><?=Temp::getItem('postDescription', $i)?></p>
 
     <?php endfor; ?>
     <?php else: ?>
 
-        <h2>Not found in <?=Variable::get('search')?> keyword</h2>
+        <h2>Not found in <?=Temp::get('search')?> keyword</h2>
 
     <?php endif; ?>
 

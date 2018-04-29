@@ -1,4 +1,4 @@
-<?php use Engine\Variable; ?>
+<?php use Engine\Temp; ?>
 
 <form method="GET">
     <input type="text" name="search" value="" placeholder="Search">

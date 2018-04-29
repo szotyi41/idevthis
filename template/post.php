@@ -1,4 +1,4 @@
-<?php use Engine\Variable; ?>
+<?php use Engine\Temp; ?>
 
 <?php include TEMPLATE . "header.php"; ?>
 
@@ -6,27 +6,27 @@
 
     <?php include TEMPLATE . "searchbar.php"; ?>
 
-    <h1><?=Variable::get('postTitle')?></h1>
-    <p>Létrehozva <?=Variable::get('postCreated')?></p>
+    <h1><?=Temp::get('postTitle')?></h1>
+    <p>Létrehozva <?=Temp::get('postCreated')?></p>
 
-    <?php foreach(Variable::get('postTags') as $tag):?>
+    <?php foreach(Temp::get('postTags') as $tag):?>
         <a class="tag" href="?search=<?=$tag?>"><?=$tag?></a>
     <?php endforeach;?>
 
-    <?php include TEMPLATE . "posts" . DIR . Variable::get('postContent'); ?>
+    <?php include TEMPLATE . "posts" . DIR . Temp::get('postContent'); ?>
 
 
-    <?php if(is_array(Variable::get('commentId'))): ?>
+    <?php if(is_array(Temp::get('commentId'))): ?>
 
         <h1>Comments</h1>
 
-    <?php for($i = 0; $i < count(Variable::get('commentId')); $i++): ?>
+    <?php for($i = count(Temp::get('commentId'))-1; $i >= 0; $i--): ?>
 
         <div class="comment">
-            <img class="commentAvatar" src="template/images/avatar.png">
-            <p class="commentUser"><?=Variable::getItem('commentUserName', $i)?></p>
-            <p class="commentCreated"><?=Variable::getItem('commentCreated', $i)?></p>
-            <p class="commentContent"><?=Variable::getItem('commentContent', $i)?></p>
+            <img class="commentAvatar" src="template/images/avatars/<?=Temp::getItem('commentUserAvatar', $i)?>">
+            <p class="commentUser"><?=Temp::getItem('commentUserName', $i)?></p>
+            <p class="commentCreated"><?=Temp::getItem('commentCreated', $i)?></p>
+            <p class="commentContent"><?=Temp::getItem('commentContent', $i)?></p>
         </div>
 
     <?php endfor; ?>
@@ -37,7 +37,7 @@
     <?php endif; ?>
 
     <form method="post">
-        <textarea name="content"></textarea>
+        <textarea name="comment"></textarea>
         <input type="submit" value="Post">
     </form>
 

@@ -8,7 +8,7 @@
 
 namespace Engine;
 
-class DateCount
+abstract class DateCount
 {
 
     /**

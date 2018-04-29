@@ -5,7 +5,7 @@ namespace Engine\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use DoctrineExtensions\Query\Mysql\Date;
 use Engine\DateCount;
-use Engine\Variable;
+use Engine\Temp;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
