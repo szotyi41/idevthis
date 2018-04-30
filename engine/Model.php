@@ -27,6 +27,9 @@ class Model
     /**
      * Select a Post by id
      * @param integer $id
+     * @var Post post
+     * @throws NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function selectPost($id)
     {
@@ -37,11 +40,10 @@ class Model
         Temp::set('postTitle', $post->getTitle());
         Temp::set('postContent', $post->getContentfile());
         Temp::set('postCreated', $post->getCreated());
+        Temp::set('postHeader', $post->getHeaderfile());
         Temp::set('postTags', $post->getTags());
 
         $this->selectComments($id);
-
-        include TEMPLATE . "post.php";
     }
 
 
@@ -57,28 +59,27 @@ class Model
 
     /**
      * Select posts by search text, set null if you need all of them
-     * @param $search
+     * @param $search string
+     * @param $id
      */
-    public function selectPosts($search) {
+    public function selectPosts($search, $id) {
         $repository = $this->entityManager->getRepository(Post::class);
-        $query = $repository->createQueryBuilder('p')
-            ->where("p.title LIKE :search OR p.tags LIKE :search OR p.description LIKE :search")
-            ->setParameter('search', '%' . $search . '%')
+        $query = $repository->createQueryBuilder("p")
+            ->where("(p.id <> :noid) AND (p.title LIKE :search OR p.tags LIKE :search OR p.description LIKE :search)")
+            ->setParameters(array("search" => "%" . $search . "%", "noid" => $id))
             ->setMaxResults(POST_PER_PAGE);
 
         $posts = $query->getQuery()->getResult();
 
         /** @var Post $post */
         foreach ($posts as $post) {
-            Temp::addToArray('postId', $post->getId());
-            Temp::addToArray('postTitle', $post->getTitle());
-            Temp::addToArray('postCreated', $post->getCreated());
-            Temp::addToArray('postHeader', $post->getHeaderfile());
-            Temp::addToArray('postDescription', $post->getDescription());
-            Temp::addToArray('postTags', $post->getTags());
+            Temp::addToArray('postsId', $post->getId());
+            Temp::addToArray('postsTitle', $post->getTitle());
+            Temp::addToArray('postsCreated', $post->getCreated());
+            Temp::addToArray('postsHeader', $post->getHeaderfile());
+            Temp::addToArray('postsDescription', $post->getDescription());
+            Temp::addToArray('postsTags', $post->getTags());
         }
-
-        include TEMPLATE . "home.php";
     }
 
 

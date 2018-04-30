@@ -6,21 +6,21 @@
 
     <?php include TEMPLATE . "searchbar.php"; ?>
 
-    <?php if(is_array(Temp::get('postId'))): ?>
-    <?php for($i = 0; $i < count(Temp::get('postId')); $i++): ?>
+    <?php if(is_array(Temp::get('postsId'))): ?>
+    <?php for($i = 0; $i < count(Temp::get('postsId')); $i++): ?>
 
-        <h1><a href="?post=<?=Temp::getItem('postId', $i)?>"><?=Temp::getItem('postTitle', $i)?></a></h1>
-        <p>Létrehozva <?=Temp::getItem('postCreated', $i)?></p>
+        <h1><a href="?post=<?=Temp::getItem('postsId', $i)?>"><?=Temp::getItem('postsTitle', $i)?></a></h1>
+        <p>Létrehozva <?=Temp::getItem('postsCreated', $i)?></p>
 
-        <?php foreach(Temp::getItem('postTags', $i) as $tag):?>
+        <?php foreach(Temp::getItem('postsTags', $i) as $tag):?>
             <a class="tag" href="?search=<?=$tag?>"><?=$tag?></a>
         <?php endforeach;?>
 
-        <?php if(is_file("template/images/" . Temp::getItem('postHeader', $i))): ?>
-            <img class="postHeader" src="template/images/<?=Temp::getItem('postHeader', $i)?>">
+        <?php if(is_file("template/images/" . Temp::getItem('postsHeader', $i))): ?>
+            <img class="postHeader" src="template/images/<?=Temp::getItem('postsHeader', $i)?>">
         <?php endif; ?>
 
-        <p><?=Temp::getItem('postDescription', $i)?></p>
+        <p><?=Temp::getItem('postsDescription', $i)?></p>
 
     <?php endfor; ?>
     <?php else: ?>

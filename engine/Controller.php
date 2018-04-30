@@ -16,14 +16,17 @@ class Controller
 
     private $entityManager;
 
-    /** @var $model Model */
+    /**@var $model Model */
     private $model;
+    /**@var $view View */
+    private $view;
 
     function __construct($entityManager)
     {
         $this->entityManager = $entityManager;
 
         $this->getModel();
+        $this->getView();
         $this->createAvatars();
         $this->action();
     }
@@ -50,11 +53,21 @@ class Controller
         }
 
         /** Select a post by id */
-        if      (isset($_GET['post'])) $this->model->selectPost($_GET['post']);
+        if      (isset($_GET['post'])) {
+            $this->model->selectPost($_GET['post']);
+            $this->model->selectPosts("", Temp::get('postId'));
+            $this->view->get('post');
+        }
 
         /** Select post list by Search text */
-        elseif  (isset($_GET['search'])) $this->model->selectPosts($_GET['search']);
-        else    $this->model->selectPosts(null);
+        elseif  (isset($_GET['search'])) {
+            $this->model->selectPosts($_GET['search'], 0);
+            $this->view->get('home');
+        }
+        else    {
+            $this->model->selectPosts("", 0);
+            $this->view->get('home');
+        }
     }
 
     /**
@@ -77,7 +90,7 @@ class Controller
     }
 
     /**
-     * Get the called model, or call it.
+     * Get the called model, or call it. (singleton)
      * @return Model
      */
     public function getModel()
@@ -89,5 +102,17 @@ class Controller
         return $this->model;
     }
 
+    /**
+     * Get the called view, or call it. (singleton)
+     * @return View
+     */
+    public function getView()
+    {
+        if($this->view == null) {
+            $this->view = new View($this->entityManager);
+        }
+
+        return $this->view;
+    }
 
 }
